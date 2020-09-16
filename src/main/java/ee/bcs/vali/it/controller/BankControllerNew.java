@@ -48,11 +48,6 @@ public class BankControllerNew {
     public void transfer(@RequestBody BankClientsSQL client) {
         accountService.transfer(client.getAccountFrom(), client.getAccountTo(), client.getAmount());
     }
-
-    /*@PutMapping("updateAllAccounts")
-    public void updateAllAccounts(@RequestBody BankClientsSQL client) {
-        accountService.updateAllAccounts(client.getAccountId(), client.getBalance());
-    }*/
     //Shows statement of specified account
     @PostMapping("transaction_history")
     public List showTransactionHistory(@RequestBody BankClientsStatement client){
@@ -60,5 +55,5 @@ public class BankControllerNew {
     }
 }
 //J @PostMapping("transaction_history")
-//public List showStatementByAccount(@RequestBody BankClientsSQL client) {
+//public List showTransactionHistory(@RequestBody BankClientsSQL client) {
 //    return accountService.showTransactionHistory(client.getAccountId());
