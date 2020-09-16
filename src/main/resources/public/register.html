@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DigitalLynx</title>
+    <!meta http-equiv=""Cache-control" content="NO-CACHE">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<br>
+<img src = "https://image.freepik.com/free-vector/lynx-illustration_56972-29.jpg" style="width:250px;height:200px;">
+<br>
+
+<h1>Digital Lynx Bank</h1>
+<br>
+<h5>Register new account</h5>
+<form>
+    <!Create client>
+    <input type="text" id="firstName" placeholder="First name">
+    <input type="text" id="lastName" placeholder="Last name">
+    <input type="text" id="userName" placeholder="Username">
+    <input type="text" id="password" placeholder="Password">
+    <input class="test-button" type="button" id="createClient"  value="REGISTER">
+</form>
+<br>
+<input class="test-button" type="button" onclick="location.href='index.html'" id="login"  value="SIGN IN">
+<br>
+
+</body>
+
+<script>
+    let createClient = document.getElementById("createClient")
+    createClient.addEventListener('click', function () {
+        fetch('/createclient', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                firstName: firstName.value,
+                lastName: lastName.value,
+                userName: userName.value,
+                password: password.value
+            })
+        })
+            .then(function(response) {
+                createClient.value = 'Registered';
+                firstName.value = ' ';
+                lastName.value  = ' ';
+                userName.value = ' ';
+                password.value = ' ';
+
+            })
+            .catch(function(err) {
+                yourStatementOutput.value = 'Not right';
+            });
+    });
+
+
+
+
+
+</script>
+</html>

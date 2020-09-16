@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DigitalLynx</title>
+    <!meta http-equiv=""Cache-control" content="NO-CACHE">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<br>
+<img src = "https://image.freepik.com/free-vector/lynx-illustration_56972-29.jpg" style="width:250px;height:200px;">
+<br>
+
+<h1>Digital Lynx Bank</h1>
+<br>
+<h5>See Your balance</h5>
+<form>
+    <!Register new account>
+    <input type="text" id="accountNew" placeholder="Account number">
+    <input type="text" id="balanceNew" placeholder="Balance">
+    <input type="text" id="customerId" placeholder="Customer ID">
+    <input class="test-button" type="button" id="registerAccount"  value="REGISTER ACCOUNT">
+</form>
+<br>
+<form>
+    <!Balance from specified account>
+    <input type="text" id="balance" placeholder="Enter account number">
+    <input class="test-button" type="button" id="askBalance"  value="VIEW BALANCE">
+    <input type="text" id="returnBalance" placeholder="Account balance">
+</form>
+<br>
+<h5>Deposit money</h5>
+<form>
+    <!Deposit to specified account>
+    <input type="text" id="accountDeposit" placeholder="Account number">
+    <input type="text" id="amountDeposit" placeholder="Enter amount">
+    <input class="test-button" type="button" id="depositMoney"  value="DEPOSIT MONEY">
+</form>
+<br>
+<h5>Withdraw money</h5>
+<form>
+    <!Withdraw from specified account>
+    <input type="text" id="accountWithdraw" placeholder="Account number">
+    <input type="text" id="amountWithdraw" placeholder="Enter amount">
+    <input class="test-button" type="button" id="withdrawMoney"  value="WITHDRAW MONEY">
+</form>
+<br>
+<h5>Transfer money</h5>
+<form>
+    <!Transfer from to specified account>
+    <input type="text" id="payerAccount" placeholder="Account number From">
+    <input type="text" id="receiverAccount" placeholder="Account number To">
+    <input type="text" id="amountTransfer" placeholder="Enter amount">
+    <input class="test-button" type="button" id="transferMoney"  value="TRANSFER MONEY">
+</form>
+<br>
+<h5>Transaction history</h5>
+<form>
+    <! Bank statement>
+    <input type="text" id="accountId" placeholder="Account ID">
+    <input class="test-button" type="button" id="transactionHistory"  value="SHOW TRANSACTION HISTORY">
+</form>
+<br>
+
+<div id = "showTransactionHistory">
+
+</div>
+<br>
+<form>
+    <input class="test-button" type="button" onclick="location.href='index.html'" name="logout"  value="LOG OUT">
+</form>
+<br>
+<br>
+
+</body>
+
+<script>
+
+    let registerAccount = document.getElementById("registerAccount")
+    registerAccount.addEventListener('click', function () {
+        fetch('/newaccount', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accountNr: accountNew.value,
+                balance: balanceNew.value,
+                customerId: customerId.value
+            })
+        })
+            .then(function(response) {
+                registerAccount.value = 'Account registered';
+                accountNew.value = ' ';
+                balanceNew.value  = ' ';
+                customerId.value = ' ';
+            })
+            .catch(function(err) {
+                yourStatementOutput.value = 'Not right';
+            });
+    });
+
+    let askBalance = document.getElementById("askBalance")
+    askBalance.addEventListener('click', function () {
+        fetch('/askbalance', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accountNr: balance.value,
+            })
+        })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(jsonData) {
+                returnBalance.value=jsonData;
+            })
+            .catch(function(err) {
+                yourStatementOutput.value = 'Not right';
+            });
+    });
+
+    let depositMoney = document.getElementById("depositMoney")
+    depositMoney.addEventListener('click', function () {
+        fetch('/deposit', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accountNr: accountDeposit.value,
+                balance: amountDeposit.value,
+            })
+        })
+            .then(function(response) {
+                depositMoney.value = 'Money deposited';
+                accountDeposit.value = ' ';
+                amountDeposit.value  = ' ';
+            })
+            .catch(function(err) {
+                yourStatementOutput.value = 'Not right';
+            });
+    });
+
+    let withdrawMoney = document.getElementById("withdrawMoney")
+    withdrawMoney.addEventListener('click', function () {
+        fetch('/withdraw', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accountNr: accountWithdraw.value,
+                balance: amountWithdraw.value,
+            })
+        })
+            .then(function(response) {
+                withdrawMoney.value = 'Money withdrawed';
+                accountWithdraw.value = ' ';
+                amountWithdraw.value  = ' ';
+            })
+            .catch(function(err) {
+                yourStatementOutput.value = 'Not right';
+            });
+    });
+
+    let transferMoney = document.getElementById("transferMoney")
+    transferMoney.addEventListener('click', function () {
+        fetch('/transfer2', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accountFrom: payerAccount.value,
+                accountTo: receiverAccount.value,
+                amount: amountTransfer.value
+            })
+        })
+            .then(function(response) {
+                transferMoney.value = 'Money transferred';
+                payerAccount.value = ' ';
+                receiverAccount.value  = ' ';
+                amountTransfer.value = ' ';
+            })
+            .catch(function(err) {
+                yourStatementOutput.value = 'Not right';
+            });
+    });
+
+    let transactionHistory = document.getElementById("transactionHistory")
+    transactionHistory.addEventListener('click', function () {
+        fetch('/transaction_history', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accountId: accountId.value,
+            })
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (jsonData){
+                var html = '<table width="763px" border="1" align="center">';
+                html += '<tr>';
+                html += '<td><b>ACCOUNT ID</b></td>';
+                html += '<td><b>DEPOSIT</b></td>';
+                html += '<td><b>WITHDRAW</b></td>';
+                html += '<td><b>BALANCE</b></td>';
+                html += '</tr>';
+                for (var i = 0; i < jsonData.length; ++i) {
+                    var item = jsonData[i];
+                    html += '<tr>';
+                    html += '<td>'+item.accountId+'</td>';
+                    if(item.deposit == null){
+                        html += '<td></td>';
+                    } else {
+                        html += '<td>'+item.deposit+'</td>';
+                    }
+                    if(item.withdraw == null){
+                        html += '<td></td>';
+                    } else {
+                        html += '<td>'+item.withdraw+'</td>';
+                    }
+                    html += '<td>'+item.balance+'</td>';
+                    html += '</tr>';
+                }
+                html += '</table>';
+
+                showTransactionHistory.innerHTML = html;
+
+            })
+            .catch(function(err) {
+               yourStatementOutput.value = 'Not right';
+            });
+    });
+
+
+</script>
+</html>
